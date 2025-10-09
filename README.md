@@ -1,32 +1,32 @@
-### Welcome to my ik project 👋
+### Welcome to my inverse kinematic project for Unity 👋
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
 ![https://github.com/Your_Repository_Name/Your_GIF_Name.gif](Assets/GitDocs/Arm.png)
 
-First of all, this project has the objective of making an ik tool, a simple and an ik chain too.
+The project has two objectives: first, to create a simple inverse kinematics tool; and second, to create an inverse kinematics chain (with more than one joint).
 
 ## Setup
 
-What are we beginning with? First the script `SimpleIK.cs` needs to be in the scene on an object.
+Where do we start? First, the script `SimpleIK.cs` needs to be added  to an object in the scene.
 
 Here's what we need next:
-* 1 arm with 3 GameObjects
-* 1 empty for the position target
-* 1 empty for the rotation target
+* one arm with three GameObjects;
+* one empty GameObject for the position target;
+* one empty GameObject for the rotation target.
 
-Next let's see how to make it work!
+Now let's see how to make it work!
 
 ![https://github.com/Your_Repository_Name/Your_GIF_Name.gif](Assets/GitDocs/Script.png)
 
-On the script:
-* __*Bones*__ is just the list of bones we want to affect
-* __*Target*__ for the position one
-* __*Rotation Target*__ for the rotation one
-* __*Offset*__ is a parameter for rotation of the bones, sometime bones are not in the right direction
-* __*Shoulder Offset*__ as the previous one it's for the rotation of the arm this time
+In the script:
+* __*Bones*__ is just a list of the bones we want to affect.
+* __*Target*__ for the position one.
+* __*Rotation Target*__ is for the rotation one.
+* __*Offset*__ is a parameter for the rotation of the bones. Sometimes, the bones are not in the right direction.
+* __*Shoulder Offset*__ is similar to the previous one; it's for the rotation of the arm.
 
- ## Examples of the length limit and rotation in practice
+ ## Here are some examples of the length limit and rotation in practice:
  ![https://github.com/Your_Repository_Name/Your_GIF_Name.gif](Assets/GitDocs/MaxLength.gif)
  ![https://github.com/Your_Repository_Name/Your_GIF_Name.gif](Assets/GitDocs/Rotation.gif)
