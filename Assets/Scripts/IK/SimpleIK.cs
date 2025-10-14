@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class SimpleIK : MonoBehaviour
 {
     public Transform[] _bones;
@@ -7,20 +8,32 @@ public class SimpleIK : MonoBehaviour
     public Transform _rotationTarget;
     public Vector3 _offset;
     public float _ShoulderOffset;
+    public bool _switchIkFk = true;
 
     float[] _lengths = new float[2];
     float _totalLength;
 
     void Start()
     {
-        _lengths[0] = Vector3.Distance(_bones[0].position, _bones[1].position);
-        _lengths[1] = Vector3.Distance(_bones[1].position, _bones[2].position);
-        _totalLength = _lengths[0] + _lengths[1];
+        SetUpLength();
     }
 
     void LateUpdate()
     {
-        SolveIK();
+        SetUpLength();
+
+        if (_switchIkFk)
+            SolveIK();
+    }
+
+    void SetUpLength()
+    {
+        if (_lengths[0] != 0 || _lengths[1] != 0 || _totalLength != 0)
+            return;
+
+        _lengths[0] = Vector3.Distance(_bones[0].position, _bones[1].position);
+        _lengths[1] = Vector3.Distance(_bones[1].position, _bones[2].position);
+        _totalLength = _lengths[0] + _lengths[1];
     }
 
     void SolveIK()
