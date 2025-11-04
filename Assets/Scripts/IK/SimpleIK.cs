@@ -6,7 +6,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class SimpleIK : MonoBehaviour
 {
-    public Transform[] _bones;
+    public Transform[] _bones = new Transform[3];
     public Transform _target;
     public Transform _rotationTarget;
     public Vector3 _offset;
@@ -20,15 +20,12 @@ public class SimpleIK : MonoBehaviour
     float[] _lengths = new float[2];
     float _totalLength;
 
-    void Start()
-    {
-        SetUpLength();
-    }
-
     void LateUpdate()
     {
+        if (_bones[0] == null || _bones[1] == null || _bones[2] == null) return;
         SetUpLength();
 
+        if (_target == null || _rotationTarget == null) return;
         SolveIK();
         SolveFK();
         Interpolation(_interpolationSwitch);
@@ -36,8 +33,7 @@ public class SimpleIK : MonoBehaviour
 
     void SetUpLength()
     {
-        if (_lengths[0] != 0 || _lengths[1] != 0 || _totalLength != 0)
-            return;
+        if (_lengths[0] != 0 || _lengths[1] != 0 || _totalLength != 0) return;
 
         _lengths[0] = Vector3.Distance(_bones[0].position, _bones[1].position);
         _lengths[1] = Vector3.Distance(_bones[1].position, _bones[2].position);
@@ -46,20 +42,16 @@ public class SimpleIK : MonoBehaviour
 
     void SolveFK()
     {
-        if (_interpolationSwitch != 0)
-            return;
+        if (_interpolationSwitch != 0) return;
 
         _FKRotations[0] = _bones[0].rotation;
         _FKRotations[1] = Quaternion.identity;
         _FKRotations[2] = _bones[1].rotation;
-        _FKRotations[3] = Quaternion.identity;
+        _FKRotations[3] = _bones[2].rotation;
     }
 
     void SolveIK()
     {
-        if (_bones[0] == null || _bones[1] == null || _bones[2] == null || _target == null || _rotationTarget == null)
-            return;
-
         Vector3 shoulderToTarget = _target.position - _bones[0].position;
         float targetDistance = Mathf.Min(shoulderToTarget.magnitude, _totalLength - 0.001f);
         Vector3 shoulderToElbowTarget = (_rotationTarget.position - _bones[0].position).normalized;
@@ -80,12 +72,11 @@ public class SimpleIK : MonoBehaviour
 
         //Elbow rot
         Vector3 elbowToHandWorld = _target.position - _bones[1].position;
-        Quaternion elbowToHandLocal = Quaternion.AngleAxis(_ShoulderOffset, Vector3.up);
 
         _IKRotations[0] = shoulderRotWorld * shoulderToTargetRotation;
         _IKRotations[1] = shoulderRotLocal;
         _IKRotations[2] = Quaternion.LookRotation(elbowToHandWorld, axis) * Quaternion.Euler(_offset);
-        _IKRotations[3] = elbowToHandLocal;
+        _IKRotations[3] = _target.rotation;
     }
 
     void Interpolation(float time)
@@ -98,6 +89,6 @@ public class SimpleIK : MonoBehaviour
         _bones[0].rotation = _actualRot[0];
         _bones[0].localRotation *= _actualRot[1];
         _bones[1].rotation = _actualRot[2];
-        _bones[1].localRotation *= _actualRot[3];
+        _bones[2].rotation = _actualRot[3];
     }
 }
